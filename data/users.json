@@ -1,0 +1,101 @@
+[{
+  "_id": {
+    "$oid": "641e7dc9e4a312410ae7dc96"
+  },
+  "account_created": "2023-01-01T03:44:04.000+00:00",
+  "email": "admin@school.com",
+  "password": "test",
+  "access_role": "admin",
+  "firstname": "Test",
+  "lastname": "Testerson",
+  "last_login": {
+    "$date": {
+      "$numberLong": "1682566106227"
+    }
+  },
+  "authentication_key": "5924c7a1-360b-4a64-ae85-d578b74447e6"
+},{
+  "_id": {
+    "$oid": "6449b86b9973e67ad79cbb24"
+  },
+  "account_created": "2023-04-26T23:48:59.142Z",
+  "email": "test1@school.com",
+  "password": "$2a$10$Q6g9mLMDes9CJSACiQbjHuqn1h1BG5Ly.cRWKH2GZqzkyWffSWRy2",
+  "access_role": "graduated_student",
+  "firstname": "Test",
+  "lastname": "Testerson",
+  "last_login": "2021-02-02T03:44:04.000+00:00",
+  "authentication_key": "c3fc5d0f-a3a7-4a93-b1ed-041438f51056"
+},{
+  "_id": {
+    "$oid": "6449b8729973e67ad79cbb25"
+  },
+  "account_created": "2023-04-26T23:49:06.155Z",
+  "email": "test2@school.com",
+  "password": "$2a$10$2LLZb8d5bWsLnd6lirUK9O5jW7/bC/Ak8u3G4czQnBKDWILQi2z5W",
+  "access_role": "graduated_student",
+  "firstname": "Test2",
+  "lastname": "Testerson",
+  "last_login": "2021-02-02T03:44:04.000+00:00",
+  "authentication_key": "e0a80f2f-48e6-4f7f-af31-45e91a76013e"
+},{
+  "_id": {
+    "$oid": "6449b8779973e67ad79cbb26"
+  },
+  "account_created": "2023-04-26T23:49:11.713Z",
+  "email": "test3@school.com",
+  "password": "$2a$10$Ravy5xV4vtEpWvj.GnH.4uKXlyoWq10v1XjxYTuHN/D4AD0ovCOf6",
+  "access_role": "graduated_student",
+  "firstname": "Test3",
+  "lastname": "Testerson",
+  "last_login": "2021-02-02T03:44:04.000+00:00",
+  "authentication_key": "6cf43c1f-e336-4829-8e73-07fe4fcbe306"
+},{
+  "_id": {
+    "$oid": "6449b87c9973e67ad79cbb27"
+  },
+  "account_created": "2023-04-26T23:49:16.921Z",
+  "email": "test4@school.com",
+  "password": "$2a$10$qvP2rBk2sshaGnNAvwOLKuCd9ppfyMwhUA9bNY/Cdf9CJS4YcT.j.",
+  "access_role": "graduated_student",
+  "firstname": "Test4",
+  "lastname": "Testerson",
+  "last_login": "2021-02-02T03:44:04.000+00:00",
+  "authentication_key": "0d0e70a5-444a-42fe-9396-e30a5cb6c3a7"
+},{
+  "_id": {
+    "$oid": "6449b8839973e67ad79cbb28"
+  },
+  "account_created": "2023-04-26T23:49:23.509Z",
+  "email": "test5@school.com",
+  "password": "$2a$10$PUHoFFpyBLCqgU/kYmANV.bMZ3bwkJnF7JixkVNKbDxnwhYmMQDfe",
+  "access_role": "graduated_student",
+  "firstname": "Test5",
+  "lastname": "Testerson",
+  "last_login": "2021-02-02T03:44:04.000+00:00",
+  "authentication_key": "5faa02b9-2789-4d49-93ae-47fd6715c060"
+},{
+  "_id": {
+    "$oid": "6449b89e9973e67ad79cbb29"
+  },
+  "account_created": "2023-04-26T23:49:50.537Z",
+  "email": "test6@school.com",
+  "password": "$2a$10$B8MOh69d/X9F0FRxKn9qseAohDIsMMIubUg0eHmIN4Qj9RDJtvNoq",
+  "access_role": "graduated_student",
+  "firstname": "Test6",
+  "lastname": "Testerson",
+  "last_login": "2021-02-02T03:44:04.000+00:00",
+  "authentication_key": "b9a949c1-296f-4e01-a8be-540d2c3877d1"
+},{
+  "_id": {
+    "$oid": "6451bfc9a1bafc7648123bb0"
+  },
+  "account_created": "2023-05-03T01:58:33.100Z",
+  "email": "jess@school.com",
+  "password": "$2a$10$5Nyql/cUtB8309E66N/05eKGBSekQ9T7nnaNTqFo6KDZGTSK/yl7q",
+  "access_role": "student",
+  "firstname": "Jess",
+  "lastname": "Jesserson",
+  "last_login": "2021-02-02T03:44:04.000+00:00",
+  "authentication_key": false
+}]

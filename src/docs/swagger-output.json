@@ -1,0 +1,2036 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Climate Data API",
+    "description": "JSON REST API for tracking climate data"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
+  "basePath": "",
+  "paths": {
+    "/docs": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/readings/delete-test-sensor": {
+      "delete": {
+        "summary": "Delete all Test_Sensor readings",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/readings/insert_single_reading": {
+      "post": {
+        "tags": ["Readings"],
+        "summary": "Add a new reading",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "Authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Reading successfully added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    }
+                  }
+                },
+                "example": {
+                  "status": 201,
+                  "message": "Successfully added new reading with ID: 60af5d1b837ec948c038ab84"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Failed to add new reading",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Detailed error message"
+                    }
+                  }
+                },
+                "example": {
+                  "status": 500,
+                  "message": "Failed to add new reading",
+                  "error": "Error details"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Add a single reading to the database",
+          "content": {
+            "application/json": {
+              "schema": {
+                "Device Name": {
+                  "type": "string"
+                },
+                "Precipitation mm/h": {
+                  "type": "number"
+                },
+                "Time": {
+                  "type": "object",
+                  "required": ["$date"],
+                  "properties": {
+                    "$date": {
+                      "type": "object",
+                      "required": ["$numberLong"],
+                      "properties": {
+                        "$numberLong": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "Latitude": {
+                  "type": "number"
+                },
+                "Longitude": {
+                  "type": "number"
+                },
+                "Temperature (°C)": {
+                  "type": "number"
+                },
+                "Atmospheric Pressure (kPa)": {
+                  "type": "number"
+                },
+                "Max Wind Speed (m/s)": {
+                  "type": "number"
+                },
+                "Solar Radiation (W/m2)": {
+                  "type": "number"
+                },
+                "Vapor Pressure (kPa)": {
+                  "type": "number"
+                },
+                "Humidity (%)": {
+                  "type": "number"
+                },
+                "Wind Direction (°)": {
+                  "type": "number"
+                }
+              },
+              "example": {
+                "Device Name": "Test_Sensor",
+                "Precipitation mm/h": 0.011,
+                "Time": {
+                  "$date": {
+                    "$numberLong": "1620359044000"
+                  }
+                },
+                "Latitude": 111.11111,
+                "Longitude": -11.11111,
+                "Temperature (°C)": 11.11,
+                "Atmospheric Pressure (kPa)": 111.11,
+                "Max Wind Speed (m/s)": 1.11,
+                "Solar Radiation (W/m2)": 111.11,
+                "Vapor Pressure (kPa)": 1.11,
+                "Humidity (%)": 11.11,
+                "Wind Direction (°)": 111.1
+              }
+            }
+          }
+        }
+      }
+    },
+    "/readings/create_batch_readings": {
+      "post": {
+        "tags": ["Readings"],
+        "summary": "Add batch readings",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "Authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully created batch climate readings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    },
+                    "batchReadings": {
+                      "type": "array",
+                      "description": "Array of created batch climate readings",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "Device Name": {
+                            "type": "string"
+                          },
+                          "Precipitation mm/h": {
+                            "type": "number"
+                          },
+                          "Time": {
+                            "type": "object",
+                            "required": ["$date"],
+                            "properties": {
+                              "$date": {
+                                "type": "object",
+                                "required": ["$numberLong"],
+                                "properties": {
+                                  "$numberLong": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "Latitude": {
+                            "type": "number"
+                          },
+                          "Longitude": {
+                            "type": "number"
+                          },
+                          "Temperature (°C)": {
+                            "type": "number"
+                          },
+                          "Atmospheric Pressure (kPa)": {
+                            "type": "number"
+                          },
+                          "Max Wind Speed (m/s)": {
+                            "type": "number"
+                          },
+                          "Solar Radiation (W/m2)": {
+                            "type": "number"
+                          },
+                          "Vapor Pressure (kPa)": {
+                            "type": "number"
+                          },
+                          "Humidity (%)": {
+                            "type": "number"
+                          },
+                          "Wind Direction (°)": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": 201,
+                  "message": "Successfully created batch climate readings",
+                  "batchReadings": [
+                    {
+                      "Device Name": "Test_Sensor",
+                      "Precipitation mm/h": 0.011,
+                      "Time": {
+                        "$date": {
+                          "$numberLong": "1620359044000"
+                        }
+                      },
+                      "Latitude": 111.11111,
+                      "Longitude": -11.11111,
+                      "Temperature (°C)": 11.11,
+                      "Atmospheric Pressure (kPa)": 111.11,
+                      "Max Wind Speed (m/s)": 1.11,
+                      "Solar Radiation (W/m2)": 111.11,
+                      "Vapor Pressure (kPa)": 1.11,
+                      "Humidity (%)": 11.11,
+                      "Wind Direction (°)": 111.1
+                    },
+                    {
+                      "Device Name": "Test_Sensor",
+                      "Precipitation mm/h": 0.011,
+                      "Time": {
+                        "$date": {
+                          "$numberLong": "1620359044000"
+                        }
+                      },
+                      "Latitude": 111.11111,
+                      "Longitude": -11.11111,
+                      "Temperature (°C)": 11.11,
+                      "Atmospheric Pressure (kPa)": 111.11,
+                      "Max Wind Speed (m/s)": 1.11,
+                      "Solar Radiation (W/m2)": 111.11,
+                      "Vapor Pressure (kPa)": 1.11,
+                      "Humidity (%)": 11.11,
+                      "Wind Direction (°)": 111.1
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create batch climate readings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                },
+                "example": {
+                  "status": 500,
+                  "message": "Failed to create batch climate readings"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Add batch readings to the database",
+          "content": {
+            "application/json": {
+              "schema": {
+                "batchReadings": "array"
+              },
+              "example": {
+                "batchReadings": [
+                  {
+                    "Device Name": "Test_Sensor",
+                    "Precipitation mm/h": 0.011,
+                    "Time": {
+                      "$date": {
+                        "$numberLong": "1620359044000"
+                      }
+                    },
+                    "Latitude": 111.11111,
+                    "Longitude": -11.11111,
+                    "Temperature (°C)": 11.11,
+                    "Atmospheric Pressure (kPa)": 111.11,
+                    "Max Wind Speed (m/s)": 1.11,
+                    "Solar Radiation (W/m2)": 111.11,
+                    "Vapor Pressure (kPa)": 1.11,
+                    "Humidity (%)": 11.11,
+                    "Wind Direction (°)": 111.1
+                  },
+                  {
+                    "Device Name": "Test_Sensor",
+                    "Precipitation mm/h": 0.011,
+                    "Time": {
+                      "$date": {
+                        "$numberLong": "1620359044000"
+                      }
+                    },
+                    "Latitude": 111.11111,
+                    "Longitude": -11.11111,
+                    "Temperature (°C)": 11.11,
+                    "Atmospheric Pressure (kPa)": 111.11,
+                    "Max Wind Speed (m/s)": 1.11,
+                    "Solar Radiation (W/m2)": 111.11,
+                    "Vapor Pressure (kPa)": 1.11,
+                    "Humidity (%)": 11.11,
+                    "Wind Direction (°)": 111.1
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/readings/{id}": {
+      "put": {
+        "tags": ["Readings"],
+        "summary": "Update a specific measurement by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "Authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully updated the reading",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    },
+                    "oldValue": {
+                      "type": "object",
+                      "description": "The old reading value"
+                    },
+                    "newValue": {
+                      "type": "object",
+                      "description": "The updated reading value"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No reading found with the specified ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                },
+                "example": {
+                  "status": 404,
+                  "message": "No reading found with the specified ID"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to update the reading",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  }
+                },
+                "example": {
+                  "status": 500,
+                  "message": "Failed to update the reading",
+                  "error": "Error details"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Update specific measurement",
+          "content": {
+            "application/json": {
+              "schema": {
+                "Precipitation mm/h": {
+                  "type": "number"
+                }
+              },
+              "example": {
+                "Precipitation mm/h": 0.022
+              }
+            }
+          }
+        }
+      }
+    },
+    "/readings/max/{measurement}/{startDate}/{endDate}": {
+      "get": {
+        "tags": ["Readings"],
+        "summary": "Get max readings in a given date range",
+        "description": "",
+        "parameters": [
+          {
+            "name": "measurement",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "deviceName",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "Authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved max measurement for the specified date range",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "Time": {
+                          "type": "object",
+                          "description": "Time of the reading"
+                        },
+                        "Measurement": {
+                          "type": "number",
+                          "description": "Max measurement value"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found for the specified date range",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                },
+                "example": {
+                  "status": 404,
+                  "message": "No data found for the specified date range"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to retrieve max measurement for the specified date range",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  }
+                },
+                "example": {
+                  "status": 500,
+                  "message": "Failed to retrieve max measurement for the specified date range",
+                  "error": "Error details"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/readings/{deviceName}/{date}/{startTime}/{endTime}": {
+      "get": {
+        "tags": ["Readings"],
+        "summary": "Get readings from a specific sensor at a given date and time range",
+        "description": "",
+        "parameters": [
+          {
+            "name": "deviceName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startTime",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endTime",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "Authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved readings by date and time range",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    },
+                    "totalCount": {
+                      "type": "integer",
+                      "description": "Total count of readings"
+                    },
+                    "totalPages": {
+                      "type": "integer",
+                      "description": "Total number of pages"
+                    },
+                    "currentPage": {
+                      "type": "integer",
+                      "description": "Current page number"
+                    },
+                    "data": {
+                      "type": "array",
+                      "description": "Array of readings",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to retrieve readings by date and time range",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/readings/{deviceName}/{date}/{hour}": {
+      "get": {
+        "tags": ["Readings"],
+        "summary": "Get temperature, atmospheric pressure, radiation, and precipitation readings for a specific sensor by date and hour",
+        "description": "The hour should be provided in 24-hour format (HH), without including the minutes.",
+        "parameters": [
+          {
+            "name": "deviceName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hour",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "Authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved readings by date and time",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Object containing the readings data"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to retrieve readings by date and time",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/readings": {
+      "get": {
+        "tags": ["Readings"],
+        "summary": "Get all readings with pagination",
+        "description": "",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limit per page",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "deviceName",
+            "in": "query",
+            "description": "Sensor name (optional)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "Authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved readings with pagination",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Object containing the readings data"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to retrieve readings with pagination",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/create_test_user": {
+      "post": {
+        "tags": ["Test"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "Authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully created new user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    }
+                  }
+                },
+                "example": {
+                  "status": 200,
+                  "message": "Successfully created new user Test with ID: 1"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create new user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  }
+                },
+                "example": {
+                  "status": 500,
+                  "message": "Failed to create new user",
+                  "error": "Error details"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Create user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "access_role": {
+                  "type": "string"
+                },
+                "firstname": {
+                  "type": "string"
+                },
+                "lastname": {
+                  "type": "string"
+                },
+                "last_login": {
+                  "type": "string"
+                }
+              },
+              "example": {
+                "email": "karen@school.com",
+                "password": "karen",
+                "access_role": "student",
+                "firstname": "karen",
+                "lastname": "karenerson",
+                "last_login": "2023-02-02T03:44:04.000+00:00"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "get": {
+        "tags": ["Authentication"],
+        "summary": "Login with API key",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "Authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully logged in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid API key or not an admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/create_new_user": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create new user",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "Authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully created new user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    }
+                  }
+                },
+                "example": {
+                  "status": 200,
+                  "message": "Successfully created new user Test with ID: 1"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create new user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  }
+                },
+                "example": {
+                  "status": 500,
+                  "message": "Failed to create new user",
+                  "error": "Error details"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Create user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "access_role": {
+                  "type": "string"
+                },
+                "firstname": {
+                  "type": "string"
+                },
+                "lastname": {
+                  "type": "string"
+                }
+              },
+              "example": {
+                "email": "test@school.com",
+                "password": "test",
+                "access_role": "student",
+                "firstname": "Test",
+                "lastname": "Testerson"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/create_multiple_users": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create multiple users",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authentication_key",
+            "in": "header",
+            "description": "Authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully created new users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    },
+                    "users": {
+                      "type": "array",
+                      "description": "Array of created users",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create new users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  }
+                },
+                "example": {
+                  "status": 500,
+                  "message": "Failed to create new users",
+                  "error": "Error details"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Create multiple users",
+          "content": {
+            "application/json": {
+              "schema": {
+                "users": "array"
+              },
+              "example": {
+                "users": [
+                  {
+                    "email": "test1@school.com",
+                    "password": "test",
+                    "access_role": "student",
+                    "firstname": "Test1",
+                    "lastname": "Testerson"
+                  },
+                  {
+                    "email": "test2@school.com",
+                    "password": "test",
+                    "access_role": "student",
+                    "firstname": "Test2",
+                    "lastname": "Testerson"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/get_all_users": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get all users with pagination",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "Authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of users per page",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    },
+                    "data": {
+                      "type": "array",
+                      "description": "Array of user objects",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "description": "Total number of users"
+                    },
+                    "currentPage": {
+                      "type": "integer",
+                      "description": "Current page number"
+                    },
+                    "totalPages": {
+                      "type": "integer",
+                      "description": "Total number of pages"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to get users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get user by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "User ID"
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "Authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched user by their ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    },
+                    "user": {
+                      "type": "object",
+                      "description": "Object containing the user data"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failed to get user by their ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error retrieving user by their ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/email/{email}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get user by email address",
+        "description": "",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "User email"
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "Authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched user by their email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    },
+                    "user": {
+                      "type": "object",
+                      "description": "Object containing the user data"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failed to get user by their email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error retrieving user by their email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/update_access_role_by_date_range": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update user access roles by date range",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "Authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "Start date",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "End date",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "access_role",
+            "in": "query",
+            "description": "Old access role",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "new_access_role",
+            "in": "query",
+            "description": "New access role",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully updated users access level by date range",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    },
+                    "modifiedCount": {
+                      "type": "integer",
+                      "description": "Number of users whose access level has been updated"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to update users access level by date range",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}/update_admin": {
+      "put": {
+        "tags": ["Users"],
+        "summary": "Update an admin account",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Admin user ID"
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "Authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully updated admin account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    },
+                    "user": {
+                      "type": "string",
+                      "description": "Updated user's first name"
+                    }
+                  }
+                },
+                "example": {
+                  "status": 200,
+                  "message": "Successfully updated admin account",
+                  "user": "Test"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to update admin account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  }
+                },
+                "example": {
+                  "status": 500,
+                  "message": "Failed to update admin account",
+                  "error": "Error details"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Create user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "account_created": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "access_role": {
+                  "type": "string"
+                },
+                "firstname": {
+                  "type": "string"
+                },
+                "lastname": {
+                  "type": "string"
+                },
+                "last_login": {
+                  "type": "string"
+                },
+                "authentication_key": {
+                  "type": "string"
+                }
+              },
+              "example": {
+                "account_created": "2021-01-01T03:44:04.000+00:00",
+                "email": "admin@school.com",
+                "password": "test",
+                "access_role": "admin",
+                "firstname": "Test",
+                "lastname": "Testerson",
+                "last_login": "2021-02-02T03:44:04.000+00:00",
+                "authentication_key": "authkey"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/delete_user_by_id/{id}": {
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete user",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "Authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to delete user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/delete_inactive_users": {
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete inactive users",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "Authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted inactive users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    },
+                    "deletedCount": {
+                      "type": "integer",
+                      "description": "Number of inactive users deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to delete inactive users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "description": "HTTP status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "days": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
