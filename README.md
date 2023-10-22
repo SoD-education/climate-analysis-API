@@ -61,3 +61,7 @@ The API supports various interactions and operations, including:
 ## Usage
 
 For instructions on how to use the API and details on endpoints, please refer to the API documentation provided separately.
+
+## Future Modifications
+
+The renaming of endpoints is encouraged, so that they align with best practices. Current naming was used in development only.
