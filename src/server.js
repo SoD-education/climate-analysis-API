@@ -40,10 +40,10 @@ app.use(
 );
 
 // TODO: DELETE ME
-app.use((req, res, next) => {
-  console.log(`🤖🤖🤖 [SERVER.JS] Request received: ${req.method} ${req.path}`);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log(`🤖🤖🤖 [SERVER.JS] Request received: ${req.method} ${req.path}`);
+//   next();
+// });
 // TODO: ===============================================
 
 // Swagger documentation pages
@@ -61,7 +61,6 @@ import { testConnection } from "./database/mongodb.js";
 testConnection();
 
 // Start listening for API requests
-// TODO: delete /docs
 app.listen(port, () => {
-  console.log(`Express started on http://localhost:${port}/docs`);
+  console.log(`Express started on http://localhost:${port}`);
 });
