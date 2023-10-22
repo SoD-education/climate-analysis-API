@@ -3,23 +3,23 @@ import { db as getDb } from "../database/mongodb.js";
 
 // TODO: DELETE ME
 // DELETE ALL TEST_SENSOR RECORDS
-export async function deleteAllTestSensorRecords() {
-  const db = await getDb();
-  try {
-    const result = await db
-      .collection("climate-data")
-      .deleteMany({ "Device Name": "Test_Sensor" });
-    return {
-      success: true,
-      deletedCount: result.deletedCount,
-    };
-  } catch (error) {
-    return {
-      success: false,
-      error: error.message,
-    };
-  }
-}
+// export async function deleteAllTestSensorRecords() {
+//   const db = await getDb();
+//   try {
+//     const result = await db
+//       .collection("climate-data")
+//       .deleteMany({ "Device Name": "Test_Sensor" });
+//     return {
+//       success: true,
+//       deletedCount: result.deletedCount,
+//     };
+//   } catch (error) {
+//     return {
+//       success: false,
+//       error: error.message,
+//     };
+//   }
+// }
 // TODO: =======================================================
 
 // ADD READING
