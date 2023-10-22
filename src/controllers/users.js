@@ -13,199 +13,199 @@ const userController = Router();
 
 // TODO: DELETE ME
 // CREATE TEST ACCOUNT
-userController.post(
-  "/users/create_test_user",
-  apiKeyAuth,
-  hasRole("admin"),
-  validate({ body: schema.createUserSchema }),
-  (req, res) => {
-    // #swagger.tags = ['Test']
+// userController.post(
+//   "/users/create_test_user",
+//   apiKeyAuth,
+//   hasRole("admin"),
+//   validate({ body: schema.createUserSchema }),
+//   (req, res) => {
+//     // #swagger.tags = ['Test']
 
-    /* #swagger.parameters['x-api-key'] = { 
-      in: 'header',
-      description: 'Authentication key',
-      required: true,
-      type:'string'
-    } */
+//     /* #swagger.parameters['x-api-key'] = { 
+//       in: 'header',
+//       description: 'Authentication key',
+//       required: true,
+//       type:'string'
+//     } */
 
-    /* #swagger.requestBody = {
-        description: "Create user",
-        content: {
-          'application/json': {
-            schema: {
-              "email": { type: "string" },
-              "password": { type: "string" },
-              "access_role": { type: "string" },
-              "firstname": { type: "string" },
-              "lastname": { type: "string" },
-              "last_login": { type: "string" }
-            },
-            "example": {
-              "email": "karen@school.com",
-              "password": "karen",
-              "access_role": "student",
-              "firstname": "karen",
-              "lastname": "karenerson",
-              "last_login": "2023-02-02T03:44:04.000+00:00"
-            }
-          }
-        }
-    } */
+//     /* #swagger.requestBody = {
+//         description: "Create user",
+//         content: {
+//           'application/json': {
+//             schema: {
+//               "email": { type: "string" },
+//               "password": { type: "string" },
+//               "access_role": { type: "string" },
+//               "firstname": { type: "string" },
+//               "lastname": { type: "string" },
+//               "last_login": { type: "string" }
+//             },
+//             "example": {
+//               "email": "karen@school.com",
+//               "password": "karen",
+//               "access_role": "student",
+//               "firstname": "karen",
+//               "lastname": "karenerson",
+//               "last_login": "2023-02-02T03:44:04.000+00:00"
+//             }
+//           }
+//         }
+//     } */
 
-    /* #swagger.responses[200] = {
-      description: 'Successfully created new user',
-      content: {
-        'application/json': {
-          schema: {
-            type: 'object',
-            properties: {
-              status: { type: 'integer', description: 'HTTP status code' },
-              message: { type: 'string', description: 'Success message' },
-            },
-          },
-          example: {
-            status: 200,
-            message: 'Successfully created new user Test with ID: 1',
-          },
-        },
-      },
-    } */
+//     /* #swagger.responses[200] = {
+//       description: 'Successfully created new user',
+//       content: {
+//         'application/json': {
+//           schema: {
+//             type: 'object',
+//             properties: {
+//               status: { type: 'integer', description: 'HTTP status code' },
+//               message: { type: 'string', description: 'Success message' },
+//             },
+//           },
+//           example: {
+//             status: 200,
+//             message: 'Successfully created new user Test with ID: 1',
+//           },
+//         },
+//       },
+//     } */
 
-    /* #swagger.responses[500] = {
-      description: 'Failed to create new user',
-      content: {
-        'application/json': {
-          schema: {
-            type: 'object',
-            properties: {
-              status: { type: 'integer', description: 'HTTP status code' },
-              message: { type: 'string', description: 'Error message' },
-              error: { type: 'string', description: 'Error details' },
-            },
-          },
-          example: {
-            status: 500,
-            message: 'Failed to create new user',
-            error: 'Error details',
-          },
-        },
-      },
-    } */
+//     /* #swagger.responses[500] = {
+//       description: 'Failed to create new user',
+//       content: {
+//         'application/json': {
+//           schema: {
+//             type: 'object',
+//             properties: {
+//               status: { type: 'integer', description: 'HTTP status code' },
+//               message: { type: 'string', description: 'Error message' },
+//               error: { type: 'string', description: 'Error details' },
+//             },
+//           },
+//           example: {
+//             status: 500,
+//             message: 'Failed to create new user',
+//             error: 'Error details',
+//           },
+//         },
+//       },
+//     } */
 
-    const now = new Date().toISOString();
+//     const now = new Date().toISOString();
 
-    const userData = req.body;
+//     const userData = req.body;
 
-    // Generate a UUID-based API key
-    const apiKey = uuidv4();
+//     // Generate a UUID-based API key
+//     const apiKey = uuidv4();
 
-    // hash the password if it isn't already hashed
-    if (!userData.password.startsWith("$2a")) {
-      userData.password = bcrypt.hashSync(userData.password);
-    }
+//     // hash the password if it isn't already hashed
+//     if (!userData.password.startsWith("$2a")) {
+//       userData.password = bcrypt.hashSync(userData.password);
+//     }
 
-    // Convert the user into an object
-    const newUser = User(
-      null,
-      now,
-      userData.email,
-      userData.password,
-      userData.access_role,
-      userData.firstname,
-      userData.lastname,
-      "2021-02-02T03:44:04.000+00:00",
-      apiKey,
-    );
+//     // Convert the user into an object
+//     const newUser = User(
+//       null,
+//       now,
+//       userData.email,
+//       userData.password,
+//       userData.access_role,
+//       userData.firstname,
+//       userData.lastname,
+//       "2021-02-02T03:44:04.000+00:00",
+//       apiKey,
+//     );
 
-    // Insert user into the database
-    userModel
-      .createUser(newUser)
-      .then((result) => {
-        res.status(200).json({
-          status: 200,
-          message: `Successfully created new user ${result.firstname} with ID: ${result.id}`,
-          apiKey: newUser.authentication_key,
-        });
-      })
-      .catch((error) => {
-        res.status(500).json({
-          status: 500,
-          message: "Failed to create new user",
-          error: error.message,
-        });
-      });
-  },
-);
+//     // Insert user into the database
+//     userModel
+//       .createUser(newUser)
+//       .then((result) => {
+//         res.status(200).json({
+//           status: 200,
+//           message: `Successfully created new user ${result.firstname} with ID: ${result.id}`,
+//           apiKey: newUser.authentication_key,
+//         });
+//       })
+//       .catch((error) => {
+//         res.status(500).json({
+//           status: 500,
+//           message: "Failed to create new user",
+//           error: error.message,
+//         });
+//       });
+//   },
+// );
 // TODO: DELETE ME
 
 // TEST ADMIN ACCESS
-userController.get("/auth/login", apiKeyAuth, (req, res) => {
-  // #swagger.tags = ['Authentication']
+// userController.get("/auth/login", apiKeyAuth, (req, res) => {
+//   // #swagger.tags = ['Authentication']
 
-  // #swagger.summary = 'Login with API key'
+//   // #swagger.summary = 'Login with API key'
 
-  /* #swagger.parameters['x-api-key'] = { 
-      in: 'header',
-      description: 'Authentication key',
-      required: true,
-      type:'string'
-    } */
+//   /* #swagger.parameters['x-api-key'] = { 
+//       in: 'header',
+//       description: 'Authentication key',
+//       required: true,
+//       type:'string'
+//     } */
 
-  /* #swagger.responses[200] = {
-      description: 'Successfully logged in',
-      content: {
-        'application/json': {
-          schema: {
-            type: 'object',
-            properties: {
-              status: { type: 'integer', description: 'HTTP status code' },
-              message: { type: 'string', description: 'Success message' },
-            },
-          },
-        },
-      },
-    } */
+//   /* #swagger.responses[200] = {
+//       description: 'Successfully logged in',
+//       content: {
+//         'application/json': {
+//           schema: {
+//             type: 'object',
+//             properties: {
+//               status: { type: 'integer', description: 'HTTP status code' },
+//               message: { type: 'string', description: 'Success message' },
+//             },
+//           },
+//         },
+//       },
+//     } */
 
-  /* #swagger.responses[401] = {
-      description: 'Unauthorized - Invalid API key or not an admin',
-      content: {
-        'application/json': {
-          schema: {
-            type: 'object',
-            properties: {
-              status: { type: 'integer', description: 'HTTP status code' },
-              message: { type: 'string', description: 'Error message' },
-            },
-          },
-        },
-      },
-    } */
+//   /* #swagger.responses[401] = {
+//       description: 'Unauthorized - Invalid API key or not an admin',
+//       content: {
+//         'application/json': {
+//           schema: {
+//             type: 'object',
+//             properties: {
+//               status: { type: 'integer', description: 'HTTP status code' },
+//               message: { type: 'string', description: 'Error message' },
+//             },
+//           },
+//         },
+//       },
+//     } */
 
-  const isUserAdmin = req.headers["x-api-key"];
+//   const isUserAdmin = req.headers["x-api-key"];
 
-  userModel
-    .getUserByApiKey(isUserAdmin)
-    .then((user) => {
-      if (!user || user.access_role !== "admin") {
-        res.status(401).json({
-          status: 401,
-          message: "Unauthorized - Invalid API key or not an admin",
-        });
-      } else {
-        res.status(200).json({
-          status: 200,
-          message: "Successfully logged in",
-        });
-      }
-    })
-    .catch((error) => {
-      res.status(500).json({
-        status: 500,
-        message: "Error processing the login request",
-        error: error.message,
-      });
-    });
-});
+//   userModel
+//     .getUserByApiKey(isUserAdmin)
+//     .then((user) => {
+//       if (!user || user.access_role !== "admin") {
+//         res.status(401).json({
+//           status: 401,
+//           message: "Unauthorized - Invalid API key or not an admin",
+//         });
+//       } else {
+//         res.status(200).json({
+//           status: 200,
+//           message: "Successfully logged in",
+//         });
+//       }
+//     })
+//     .catch((error) => {
+//       res.status(500).json({
+//         status: 500,
+//         message: "Error processing the login request",
+//         error: error.message,
+//       });
+//     });
+// });
 
 // CREATE SINGLE USER endpoint
 userController.post(
