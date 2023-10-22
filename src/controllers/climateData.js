@@ -17,28 +17,28 @@ const climateDataController = Router();
 
 // TODO: DELETE ME
 // DELETE ALL TEST_SENSOR RECORDS endpoint
-climateDataController.delete(
-  "/readings/delete-test-sensor",
-  async (req, res) => {
-    // #swagger.summary = 'Delete all Test_Sensor readings'
+// climateDataController.delete(
+//   "/readings/delete-test-sensor",
+//   async (req, res) => {
+//     // #swagger.summary = 'Delete all Test_Sensor readings'
 
-    const result = await climateDataModel.deleteAllTestSensorRecords();
+//     const result = await climateDataModel.deleteAllTestSensorRecords();
 
-    if (result.success) {
-      res.status(200).json({
-        status: 200,
-        message: "Successfully deleted all Test_Sensor climate data",
-        deletedCount: result.deletedCount,
-      });
-    } else {
-      res.status(500).json({
-        status: 500,
-        message: "Failed to delete all Test_Sensor climate data",
-        error: result.error,
-      });
-    }
-  },
-);
+//     if (result.success) {
+//       res.status(200).json({
+//         status: 200,
+//         message: "Successfully deleted all Test_Sensor climate data",
+//         deletedCount: result.deletedCount,
+//       });
+//     } else {
+//       res.status(500).json({
+//         status: 500,
+//         message: "Failed to delete all Test_Sensor climate data",
+//         error: result.error,
+//       });
+//     }
+//   },
+// );
 // TODO: =======================================================
 
 /*
